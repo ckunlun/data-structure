@@ -1,18 +1,22 @@
-#include<stdio.h>
-#include<stdlib.h>
-typedef struct TreeNode* Tree;
-struct TreeNode {
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct TreeNode *Tree;
+struct TreeNode
+{
 	int v;
 	Tree Left, Right;
-	int flag;//若访问过，则将flag置1
-}; 
+	int flag; //若访问过，则将flag置1
+};
 int check(Tree T, int V)
 {
-	if (T->flag)
+	if (T->flag) //当前节点访问过
 	{
-		if (V < T->v) return check(T->Left, V);
-		else if (V > T->v) return check(T->Right, V);
-		else return 0;
+		if (V < T->v)
+			return check(T->Left, V);
+		else if (V > T->v)
+			return check(T->Right, V);
+		else
+			return 0;
 	}
 	else
 	{
@@ -21,7 +25,8 @@ int check(Tree T, int V)
 			T->flag = 1;
 			return 1;
 		}
-		else return 0;
+		else
+			return 0;
 	}
 }
 Tree NewNode(int V)
@@ -34,8 +39,10 @@ Tree NewNode(int V)
 }
 Tree Insert(Tree T, int V)
 {
-	if (!T) T = NewNode(V);
-	else {
+	if (!T)
+		T = NewNode(V);
+	else
+	{
 		if (V > T->v)
 			T->Right = Insert(T->Right, V);
 		else
@@ -45,17 +52,22 @@ Tree Insert(Tree T, int V)
 }
 int Judge(Tree T, int N)
 {
-	int i, V, flag = 0;//flag为0代表目前还一致，1代表不一致
+	int i, V, flag = 0; //flag为0代表目前还一致，1代表不一致
 	scanf("%d", &V);
-	if (V != T->v) flag = 1;
-	else T->flag = 1;
-	for (i = 1; i < N; i++)
+	if (V != T->v) // 判断插入值和当前结点
+		flag = 1;
+	else
+		T->flag = 1;
+	for (i = 1; i < N; i++) //当flag等于1时，次循环实现的功能仅仅是把输入数字读完，防止出错
 	{
 		scanf("%d", &V);
-		if ((!flag) && (!check(T, V))) flag = 1;
+		if ((!flag) && (!check(T, V)))
+			flag = 1;
 	}
-	if (flag) return 0;
-	else return 1;
+	if (flag)
+		return 0;
+	else
+		return 1;
 }
 Tree MakeTree(int N)
 {
@@ -74,14 +86,18 @@ Tree MakeTree(int N)
 
 void ResetT(Tree T)
 {
-	if (T->Left) ResetT(T->Left);
-	if (T->Right) ResetT(T->Right);
+	if (T->Left)
+		ResetT(T->Left);
+	if (T->Right)
+		ResetT(T->Right);
 	T->flag = 0;
 }
 void FreeTree(Tree T)
 {
-	if (T->Left) FreeTree(T->Left);
-	if (T->Right) FreeTree(T->Right);
+	if (T->Left)
+		FreeTree(T->Left);
+	if (T->Right)
+		FreeTree(T->Right);
 	free(T);
 }
 int main()
@@ -96,9 +112,11 @@ int main()
 		T = MakeTree(N);
 		for (i = 0; i < L; i++)
 		{
-			if (Judge(T, N)) printf("Yes\n");
-			else printf("No\n");
-			ResetT(T);//消除T中的标记flag
+			if (Judge(T, N))
+				printf("Yes\n");
+			else
+				printf("No\n");
+			ResetT(T); //消除T中的标记flag
 		}
 		FreeTree(T);
 		scanf("%d", &N);
